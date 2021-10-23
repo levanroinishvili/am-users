@@ -3,6 +3,17 @@
     <label for="search_input">
         <input id="search_input" type="text" placeholder="Find user" [formControl]="searchControl" />
     </label>
+    <button class="clear-search" *ngIf="searchControl.value" (click)="clearSearch()" tabindex="0" @fadeInOut>
+        <svg version="1.1" viewBox="0 0 20.699 21.479" xmlns="http://www.w3.org/2000/svg">
+            <g transform="translate(1.632 1.6339)" label="Layer 1">
+                <path d="m-2.5783e-4 -0.0014681 17.436 18.214" fill="#5f6368" stroke="#5f6368" stroke-linecap="round"
+                    stroke-width="3.2316" />
+                <path d="m-2.5783e-4 18.212 17.436-18.214" fill="#5f6368" stroke="#5f6368" stroke-linecap="round"
+                    stroke-width="3.2316" />
+                <title>Layer 1</title>
+            </g>
+        </svg>
+    </button>
 </header>
 
 <div class="content-container">
@@ -31,12 +42,15 @@
                     <label>Maximum Delay</label>
                     <input type="range" clrRange min="0" [max]="maxMaxDelay" step="100" formControlName="maxDelay">
                 </clr-range-container>
-                <div class="value-display">Set to seconds <span style="display:inline-block;min-width:35px;">{{configForm.get('maxDelay')?.value/1000}}</span></div>
+                <div class="value-display">Set to seconds <span
+                        style="display:inline-block;min-width:35px;">{{configForm.get('maxDelay')?.value/1000}}</span>
+                </div>
             </div>
         </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline" (click)="configModal.close()">Cancel</button>
-        <button type="button" class="btn btn-primary" (click)="configModal.close();saveConfig(configForm.value)">Ok</button>
+        <button type="button" class="btn btn-primary"
+            (click)="configModal.close();saveConfig(configForm.value)">Ok</button>
     </div>
 </clr-modal>

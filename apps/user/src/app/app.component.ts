@@ -6,11 +6,23 @@ import { UserSearchSpec } from './models/users.model';
 import { DbService } from './services/db.service';
 import { AppConfigType, CONFIG } from './app.config';
 import { DemoConfigService } from './services/demo-config.service';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'am-user-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [
+        style({transform: 'scale(0) rotate(-180deg)'}),
+        animate(500)
+      ]),
+      transition(':leave', [
+        animate(500, style({transform: 'scale(0) rotate(+180deg)'}))
+      ])
+    ])
+  ]
 })
 export class AppComponent {
 
@@ -40,6 +52,10 @@ export class AppComponent {
     errorProbability: new FormControl(this.configService.config.errorProbability),
     maxDelay: new FormControl(this.configService.config.maxDelay),
   });
+
+  clearSearch() {
+    this.searchControl.setValue('');
+  }
 
   saveConfig(config: AppConfigType) {
     this.configService.config = config;
