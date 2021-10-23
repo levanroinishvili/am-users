@@ -1,16 +1,28 @@
 <div class="card" tabindex="0">
-    <div class="card-header">{{userAndKey.doc?.name ?? '&lt;Unknown&gt;'}}</div>
+    <div class="card-header">{{userAndKey.data?.name ?? '&lt;Unknown&gt;'}}</div>
     <div class="card-block">
         <div class="card-media-block">
             <img src="/assets/user-icon.png" width="64" class="card-media-image" />
             <div class="card-media-description">
-                <span class="card-media-title">{{ userAndKey.doc?.role ?? '&lt;Unknown&gt;' }}</span>
-                <span class="card-media-text" *ngIf="userAndKey.doc.timestamp">Member Since {{ userAndKey.doc.timestamp | date }} </span>
+                <span class="card-media-title">{{ userAndKey.data?.role ?? '&lt;Unknown&gt;' }}</span>
+                <span class="card-media-text" *ngIf="userAndKey.data.timestamp">Member Since {{ userAndKey.data.timestamp | date:'short' }} </span>
             </div>
         </div>
     </div>
     <div class="card-footer">
         <button class="btn btn-outline">Edit</button>
-        <button class="btn btn-danger-outline">Remove</button>
+        <button class="btn btn-danger-outline" (click)="showRemoveDialog=true">Remove</button>
     </div>
 </div>
+
+<clr-modal [(clrModalOpen)]="showRemoveDialog">
+    <h3 class="modal-title">Remove {{userAndKey.data?.name}} {{ userAndKey.data?.role}}</h3>
+    <div class="modal-body">
+        <p>Remove this user?</p>
+        <p>If you proceed, this operation cannot be un-done.</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="showRemoveDialog=false">Cancel</button>
+        <button type="button" class="btn btn-danger" (click)="remove(userAndKey.ref)">Remove</button>
+    </div>
+</clr-modal>

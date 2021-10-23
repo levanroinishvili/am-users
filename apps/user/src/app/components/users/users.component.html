@@ -27,7 +27,7 @@
     <am-user-paginator [page]="page" [disabled]="disableNavigation" (pageRequest)="pageRequest.next($event)"></am-user-paginator>
 
     <div class="user-container" [@flyInOut]="pageNo">
-        <am-user-user *ngFor="let user of page.allDocs; trackBy: userTracker" [user]="user" (removed)="userRemoved(user.id)"></am-user-user>
+        <am-user-user *ngFor="let user of page.allDocs; trackBy: userTracker" [user]="user" (removed)="pageRequestRepeater.next()"></am-user-user>
     </div>
 
     <am-user-paginator [page]="page" [disabled]="disableNavigation" (pageRequest)="pageRequest.next($event)"></am-user-paginator>

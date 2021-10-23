@@ -1,4 +1,4 @@
-import { QueryDocumentSnapshot } from "@angular/fire/firestore";
+import { DocumentReference, QueryDocumentSnapshot } from "@angular/fire/compat/firestore";
 
 export type UserRole = Record<string, never>; // Currently UserRole does not have any data. It only has the key
 
@@ -20,7 +20,8 @@ export interface UserWithTimestamp extends UserCore {
 
 export interface UserWithKey {
     id: string;
-    doc: UserWithTimestamp;
+    ref: DocumentReference<UserWithTimestamp>;
+    data: UserWithTimestamp;
 }
 
 export interface PaginatedUsers {

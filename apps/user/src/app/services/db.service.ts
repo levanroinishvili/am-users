@@ -57,7 +57,8 @@ export class DbService {
       lastDoc: response.docs[response.docs.length - 1] ?? null,
       allDocs: response.docs.map(doc => ({
         id: doc.id,
-        doc: this.normalizeUser(doc.data() as unknown as UserWithFirestamp)
+        ref: doc.ref,
+        data: this.normalizeUser(doc.data() as unknown as UserWithFirestamp)
       }))
     } as unknown as PaginatedUsers))
     .then(this.delayValue, this.delayError);
