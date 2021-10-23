@@ -8,6 +8,11 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
   </head>
   <body>
-    <am-user-root>Loading users app...</am-user-root>
+    <am-user-root>
+      <style>@keyframes fadein {0%{opacity:0;transform:scale(0);}100%{opacity:1;transform:scale(1);}}</style>
+      <div style="font-size:52px;position:fixed;top:0;bottom:0;left:0;right:0;margin:auto;display:grid;justify-content:center;align-items:center;animation:fadein 2s ease both 1s;">
+        Loading users app...
+      </div>
+    </am-user-root>
   </body>
 </html>
