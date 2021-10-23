@@ -34,12 +34,14 @@ export interface PaginatedUsers {
     allDocs?: UserWithKey[];
 }
 
+export interface UserSearchSpec {
+    name?: string;
+    role?: string;
+}
+
 export interface UserPageRequest {
     startAfter?: QueryDocumentSnapshot<UserWithFirestamp> | null;
     endBefore?: QueryDocumentSnapshot<UserWithFirestamp> | null;
     limit?: number;
-    search?: {
-        name: string;
-        role: string;
-    };
+    search?: UserSearchSpec;
 }

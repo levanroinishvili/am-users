@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { combineLatest, EMPTY, Observable, of, ReplaySubject, Subject } from 'rxjs';
-import { UserPageRequest, UserWithKey } from '../../models/users.model';
+import { UserPageRequest, UserSearchSpec, UserWithKey } from '../../models/users.model';
 import { DbService } from '../../services/db.service';
 
 import { CONFIG } from '../../app.config';
@@ -38,6 +38,15 @@ export class UsersComponent {
 
   constructor( private db: DbService, ) { }
 
+  // @Input() search$!: Observable<UserSearchSpec>;
+  @Input()
+  get search() { return this._search$ }
+  set search(search: Observable<UserSearchSpec>) {
+    this._searchTrigger$.next(search);
+  }
+  _searchTrigger$ = new ReplaySubject<Observable<UserSearchSpec>>(1);
+  _search$ = this._searchTrigger$.pipe(switchAll());
+
   @Input()
   get refresher() {
     return this._refresher$;
@@ -61,13 +70,21 @@ export class UsersComponent {
 
   pageRequest = new Subject<UserPageRequest>(); // Will be used to request pagination
 
+  pageRequestWithSearch = this.search.pipe(
+    startWith<UserSearchSpec>({}),
+    switchMap(search => this.pageRequest.pipe(
+      startWith<UserPageRequest>({}),
+      map<UserPageRequest, UserPageRequest>(pageRequest => ({...pageRequest, search}))
+    ))
+  );
+
   pageRequestRepeater = new Subject<void>(); // Call next on this Subject to repeat the last pagination call
 
   pageNo = 0; // For animation: Increases with next page; Decreases with previous page
 
   // Will contain information about current page & pagination
   page$ = combineLatest([
-    this.pageRequest.pipe(startWith<UserPageRequest>({})), // Limit will be added later
+    this.pageRequestWithSearch,
     this.pageRequestRepeater.pipe(startWith(undefined)), // Internal refresh - e.g. user deleted or updated
     this.refresher.pipe(startWith(null)) // External refresh - e.g. new user created
   ]).pipe(

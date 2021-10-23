@@ -2,16 +2,14 @@
     <div class="branding">
         <span class="title">Users App</span>
     </div>
-    <form class="search">
-        <label for="search_input">
-            <input id="search_input" type="text" placeholder="Find user" />
-        </label>
-    </form>
+    <label for="search_input">
+        <input id="search_input" type="text" placeholder="Find user" [formControl]="searchControl" />
+    </label>
 </header>
 
 <div class="content-container">
 
     <am-user-newuser (created)="newUserCreated.next()"></am-user-newuser>
-    <am-user-users [refresher]="refreshForNewUser"></am-user-users>
+    <am-user-users [refresher]="refreshForNewUser" [search]="search$"></am-user-users>
 
 </div>

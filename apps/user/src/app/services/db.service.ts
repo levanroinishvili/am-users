@@ -19,10 +19,7 @@ export class DbService {
 
   constructor(
     private firestore: AngularFirestore,
-  ) {
-    (window as any).usersCollection = this.usersCollection;
-    console.log('Remove this and previous line!')
-  }
+  ) { }
 
   nameExists(name: string) {
     return defer(() => { // Promise is eager. Avoid the Observable also being eager - in case we decide to keep it as an Observable
@@ -47,7 +44,7 @@ export class DbService {
         query = query.where('name', '>=', s).where('name', '<', s + '\uf8ff');
       }
       if ( search.role ) {
-        query = query.where('role', '==', search.role).where('name', '<', search.role + '\uf8ff');
+        query = query.where('role', '==', search.role);
       }
     }
     if ( endBefore ) {
