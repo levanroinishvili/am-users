@@ -26,3 +26,31 @@
         <button type="button" class="btn btn-danger" (click)="remove(userAndKey.ref)">Remove</button>
     </div>
 </clr-modal>
+
+<clr-modal [(clrModalOpen)]="showErrorMessage">
+    <h3 class="modal-title">Error removing {{userAndKey.data?.name}} {{ userAndKey.data?.role}}</h3>
+    <div class="modal-body">
+        <clr-alert [clrAlertClosable]="false" clrAlertType="danger">
+            <clr-alert-item>
+                <span class="alert-text">Error occured while removing user</span>
+            </clr-alert-item>
+        </clr-alert>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="showErrorMessage=false">Ok</button>
+    </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="showSuccessMessage">
+    <h3 class="modal-title">Successfully removed {{userAndKey.data?.name}} {{ userAndKey.data?.role}}</h3>
+    <div class="modal-body">
+        <clr-alert [clrAlertClosable]="false" clrAlertType="success">
+            <clr-alert-item>
+                <span class="alert-text">User successfully removed - sorry to see them go ;)</span>
+            </clr-alert-item>
+        </clr-alert>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="showSuccessMessage=false">Ok</button>
+    </div>
+</clr-modal>

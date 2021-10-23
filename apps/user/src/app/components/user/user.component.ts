@@ -15,6 +15,7 @@ export class UserComponent {
 
   showRemoveDialog = false;
   showErrorMessage = false;
+  showSuccessMessage = false;
 
   remove(ref: DocumentReference<UserWithFirestamp>) {
     ref.delete()
@@ -22,6 +23,7 @@ export class UserComponent {
         () => {
           this.showRemoveDialog = false;
           this.removed.next(this.userAndKey.id);
+          this.showSuccessMessage = true;
         },
         () => {
           this.showRemoveDialog = false;
