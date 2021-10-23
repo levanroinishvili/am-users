@@ -5,6 +5,7 @@ import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operato
 import { UserSearchSpec } from './models/users.model';
 import { DbService } from './services/db.service';
 import { CONFIG } from './app.config';
+import { DemoConfigService } from './services/demo-config.service';
 
 @Component({
   selector: 'am-user-root',
@@ -13,7 +14,10 @@ import { CONFIG } from './app.config';
 })
 export class AppComponent {
 
-  constructor(private db: DbService) {}
+  constructor(
+    private configService: DemoConfigService,
+    private db: DbService,
+  ) {}
 
   newUserCreated = new Subject<void>();
   refreshForNewUser = this.newUserCreated.asObservable();
@@ -33,12 +37,12 @@ export class AppComponent {
   maxMaxDelay = CONFIG.demo.liveConfig.maxMaxDelay;
 
   configForm = new FormGroup({
-    errorProbability: new FormControl(CONFIG.demo.default.errorProbability),
-    maxDelay: new FormControl(CONFIG.demo.default.maxDelay),
+    errorProbability: new FormControl(this.configService.config.errorProbability),
+    maxDelay: new FormControl(this.configService.config.maxDelay),
   });
 
   // Will not worry about memory leaks since this will never unsubscribe during the app lifetime
-  liveConfigSubscription = this.configForm.valueChanges.subscribe(config => this.db.config = config);
+  liveConfigSubscription = this.configForm.valueChanges.subscribe(config => this.configService.config = config);
 
   parseSearchTerm(search: string, roles: string[]): UserSearchSpec {
     const words = search.split(/\s+/).filter(word => word);
