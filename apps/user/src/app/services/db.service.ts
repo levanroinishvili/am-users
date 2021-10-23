@@ -19,7 +19,10 @@ export class DbService {
 
   constructor(
     private firestore: AngularFirestore,
-  ) { }
+  ) {
+    (window as any).usersCollection = this.usersCollection;
+    console.log('Remove this and previous line!')
+  }
 
   nameExists(name: string) {
     return defer(() => { // Promise is eager. Avoid the Observable also being eager - in case we decide to keep it as an Observable
@@ -35,9 +38,18 @@ export class DbService {
 
   /** Get users. */
   getUsers(specs: UserPageRequest = {}): Promise<PaginatedUsers> {
-    const { startAfter, endBefore, limit } = specs;
+    const { startAfter, endBefore, limit, search } = specs;
     const collectionRef = this.usersCollection.ref;
     let query = collectionRef.orderBy('name');
+    if ( search ) {
+      if ( search.name ) {
+        const s = this.normalize(search.name);
+        query = query.where('name', '>=', s).where('name', '<', s + '\uf8ff');
+      }
+      if ( search.role ) {
+        query = query.where('role', '==', search.role).where('name', '<', search.role + '\uf8ff');
+      }
+    }
     if ( endBefore ) {
       query = query.endBefore(endBefore);
       if ( typeof limit === 'number' ) query = query.limitToLast(limit);
@@ -101,6 +113,14 @@ export class DbService {
 
   private trim(s: string) {
     return s.split(/\s+/).filter(word => word).join(' ');
+  }
+
+  private normalize(name: string) {
+    return name
+      .split(/\s+/) // Split into words
+      .filter(word => word) // Remove "empty words"
+      .map(word => (word[0]??'').toUpperCase() + word.slice(1)) // Titlecase words
+      .join(' '); // Join back into a "sentence" with since space delimiter
   }
 
   /** Delay certain processes for demo, to show how the app will behave over slow networks */

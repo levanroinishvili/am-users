@@ -38,4 +38,8 @@ export interface UserPageRequest {
     startAfter?: QueryDocumentSnapshot<UserWithFirestamp> | null;
     endBefore?: QueryDocumentSnapshot<UserWithFirestamp> | null;
     limit?: number;
+    search?: {
+        name: string;
+        role: string;
+    };
 }
