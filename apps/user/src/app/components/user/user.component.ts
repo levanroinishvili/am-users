@@ -1,11 +1,12 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { DocumentReference } from '@angular/fire/compat/firestore'
 import { FormControl, FormGroup } from '@angular/forms';
-import { map } from 'rxjs/operators';
+import { map, shareReplay, takeUntil } from 'rxjs/operators';
 import { UserWithFirestamp, UserWithKey, UserWithTimestamp } from '../../models/users.model';
 import { DbService } from '../../services/db.service';
-import { Validators } from '../../validators';
+import { fromList, Validators } from '../../validators';
 import { clrDateValidator, formatDate, unformatDate } from '../../utils/clarity.utils';
+import { Subject } from 'rxjs';
 
 type Status = 'idle' | 'waiting' | 'error' | 'success';
 
@@ -20,7 +21,7 @@ interface UserEdited {
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss']
 })
-export class UserComponent {
+export class UserComponent implements OnDestroy {
 
   @Output() removed = new EventEmitter<string>();
   @Output() updated = new EventEmitter<string>();
@@ -39,8 +40,13 @@ export class UserComponent {
   status: Status = 'idle';
 
   roles$ = this.db.roles$.pipe(map(roles => roles.map(r => r.name)));
+  unsubscribeAll = new Subject<void>();
+  rolesCached$ = this.roles$.pipe(
+    takeUntil(this.unsubscribeAll),
+    shareReplay(1)
+  );
 
-  roleControl = new FormControl('', Validators.required);
+  roleControl = new FormControl('', Validators.required, fromList(this.rolesCached$));
 
   nameControl = new FormControl('', {
     updateOn: 'change', // 'blur'
@@ -92,6 +98,11 @@ export class UserComponent {
         () => this.status = 'error'
       );
     }
+  }
+
+  ngOnDestroy() {
+    this.unsubscribeAll.next();
+    this.unsubscribeAll.complete();
   }
 
 }
