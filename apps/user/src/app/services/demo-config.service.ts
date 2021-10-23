@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CONFIG } from '../app.config';
-
-type AppConfigType = typeof CONFIG.demo.default;
+import { AppConfigType, CONFIG } from '../app.config';
 
 const key = 'am-users--demo-config';
 

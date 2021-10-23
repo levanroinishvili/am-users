@@ -11,10 +11,10 @@ export const CONFIG = {
         // Default values for running in the demo mode
         default: {
             // For demonstration, some API calls may be delayed by a random period
-            maxDelay: 3000, // Milliseconds
+            maxDelay: 0, // Milliseconds
 
             // For demonstration, some API calls may return error with a probability given below
-            errorProbability: .1, // 0 <= p <= 1, where 0 means no errors, 1 menas - always errors
+            errorProbability: 0, // 0 <= p <= 1, where 0 means no errors, 1 menas - always errors
         },
 
         // Users can configure values inside the app. This configures the limitations for such configuration
@@ -25,3 +25,5 @@ export const CONFIG = {
     },
 
 };
+
+export type AppConfigType = typeof CONFIG.demo.default;

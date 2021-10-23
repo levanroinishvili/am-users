@@ -37,6 +37,6 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline" (click)="configModal.close()">Cancel</button>
-        <button type="button" class="btn btn-primary" (click)="configModal.close()">Ok</button>
+        <button type="button" class="btn btn-primary" (click)="configModal.close();saveConfig(configForm.value)">Ok</button>
     </div>
 </clr-modal>

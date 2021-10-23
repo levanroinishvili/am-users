@@ -4,7 +4,7 @@ import { combineLatest, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operators';
 import { UserSearchSpec } from './models/users.model';
 import { DbService } from './services/db.service';
-import { CONFIG } from './app.config';
+import { AppConfigType, CONFIG } from './app.config';
 import { DemoConfigService } from './services/demo-config.service';
 
 @Component({
@@ -41,8 +41,9 @@ export class AppComponent {
     maxDelay: new FormControl(this.configService.config.maxDelay),
   });
 
-  // Will not worry about memory leaks since this will never unsubscribe during the app lifetime
-  liveConfigSubscription = this.configForm.valueChanges.subscribe(config => this.configService.config = config);
+  saveConfig(config: AppConfigType) {
+    this.configService.config = config;
+  }
 
   parseSearchTerm(search: string, roles: string[]): UserSearchSpec {
     const words = search.split(/\s+/).filter(word => word);
