@@ -1,5 +1,10 @@
 @import 'all';
 
+:host {
+    display: block;
+    overflow: hidden; // To avoid scrollbar during animation
+}
+
 .overlay {
     position: fixed;
     top: 0;
