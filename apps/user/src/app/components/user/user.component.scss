@@ -1,0 +1,8 @@
+.card {
+    transition: box-shadow 500ms, transform 500ms, background-color 1000ms;
+}
+.card:hover, .card:focus         {
+    box-shadow: 0 0 20px grey;
+    transform: scale(1.05) translate3d(0, -10px, 0);
+    background-color: rgb(211, 238, 247);
+}

@@ -1,0 +1,136 @@
+<button (click)="showWizard = true" class="btn btn-primary" [disabled]="showWizard">
+    Add New User
+</button>
+
+<clr-wizard
+    clrWizardSize="md" [(clrWizardOpen)]="showWizard" [clrWizardDisableStepnav]="status==='waiting'" [clrWizardPreventNavigation]="status==='waiting'"
+    clrForm clrLayout="vertical" [formGroup]="userForm"
+    (ngSubmit)="submit(newUserWizard.isLast, userForm.value)"
+    (clrWizardOnNext)="submit(newUserWizard.isLast, userForm.value)"
+    (clrWizardOnCancel)="status=reset(status,newUserWizard,userForm)"
+    (clrWizardOnFinish)="status=reset(status,newUserWizard,userForm)"
+    #newUserWizard
+>
+    <clr-wizard-title>Create User</clr-wizard-title>
+
+    <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
+    <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
+    <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
+    <clr-wizard-button [type]="'finish'">Finish</clr-wizard-button>
+
+    <clr-wizard-page>
+        <ng-template clrPageTitle>Introduction</ng-template>
+        <p>Here you will be able to create a new user.</p>
+        <p>To create a new user, we only require user's name and role</p>
+        <p>
+            The name should be unique accross the database. This is an artificial
+            constraint to demonstrate async validation
+        </p>
+    </clr-wizard-page>
+
+    <clr-wizard-page [clrWizardPageNextDisabled]="!nameControl.valid">
+        <ng-template clrPageTitle>Choose Name</ng-template>
+        <p>Choose a <strong>unique</strong> name for the user. This will be validated against our database.</p>
+        <clr-input-container>
+            <label>User's Name</label>
+            <input clrInput formControlName="name" /><span c>Loading!</span>
+            <clr-control-helper>Enter unique name for the new user</clr-control-helper>
+            <clr-control-success>Nice name!</clr-control-success>
+            <clr-control-error *clrIfError="'nonempty'">Name should not be empty</clr-control-error>
+            <clr-control-error *clrIfError="'minlength'">Name should be at least
+                {{ nameControl.errors!.minlength.requiredLength }} characters
+                long</clr-control-error>
+            <clr-control-error *clrIfError="'maxlength'">Name should be at most
+                {{ nameControl.errors!.maxlength.requiredLength }} characters
+                long</clr-control-error>
+            <clr-control-error *clrIfError="'titlecase'">Name should be in title case</clr-control-error>
+            <clr-control-error *clrIfError="'uniquename'">Name "{{ nameControl.errors!.uniquename.name }}" already
+                exists</clr-control-error>
+        </clr-input-container>
+
+        <p></p>
+        <clr-alert clrAlertType="info" [clrAlertClosable]="false" *ngIf="nameControl.pending">
+            <clr-alert-item>
+                <div class="alert-text">Validating...</div>
+                <div class="alert-text"><progress></progress></div>
+            </clr-alert-item>
+        </clr-alert>
+    </clr-wizard-page>
+
+    <clr-wizard-page [clrWizardPageNextDisabled]="roleControl.invalid">
+        <ng-template clrPageTitle>User Role</ng-template>
+        <p>Select the role for the user.</p>
+        <clr-select-container>
+            <label>Specify Role</label>
+            <clr-control-helper>Select the role of the user</clr-control-helper>
+            <clr-control-success>Great role!</clr-control-success>
+            <select clrSelect formControlName="role">
+                <option *ngFor="let role of roles$ | async" [value]="role">
+                    {{ role }}
+                </option>
+            </select>
+        </clr-select-container>
+    </clr-wizard-page>
+
+    <clr-wizard-page>
+        <ng-template clrPageTitle>Review</ng-template>
+        <p>You have described this user:</p>
+        <div class="card">
+            <div class="card-header">Creating User</div>
+            <div class="card-block">
+                <div class="card-media-block">
+                    <img src="/assets/user-icon.png" width="64" class="card-media-image" />
+                    <div class="card-media-description">
+                        <span class="card-media-title"><strong>{{nameControl.value}}</strong></span>
+                        <span class="card-media-text">{{ roleControl.value }} </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p>&nbsp;</p>
+        <clr-alert clrAlertType="info" [clrAlertClosable]="false" *ngIf="status==='idle' || status==='error'">
+            <clr-alert-item>
+                <div class="alert-text">If you proceed, we will try to create this user</div>
+            </clr-alert-item>
+        </clr-alert>
+        <clr-alert clrAlertType="success" [clrAlertClosable]="false" *ngIf="status==='success'">
+            <clr-alert-item>
+                <div class="alert-text">
+                    This user was successfully created.
+                    We will not re-submit this data, even if you proceed to the next step.
+                </div>
+            </clr-alert-item>
+        </clr-alert>
+    </clr-wizard-page>
+
+    <clr-wizard-page>
+        <ng-template clrPageTitle>Finish</ng-template>
+        <ng-container [ngSwitch]="status">
+            <ng-template ngSwitchCase="waiting">Creating User <progress style="width:100%"></progress></ng-template>
+
+            <ng-template ngSwitchCase="error">
+                <clr-alert [clrAlertClosable]="false" clrAlertType="danger">
+                    <clr-alert-item>
+                        <span class="alert-text">Error: Could not create a new user</span>
+                    </clr-alert-item>
+                </clr-alert>
+                <p>&nbsp;</p><p>&nbsp;</p><!-- Quick and dirty space -->
+                <button class="btn btn-warning-outline" (click)="submit(newUserWizard.isLast,userForm.value)">Retry</button>
+            </ng-template>
+
+            <ng-template ngSwitchCase="success">
+                <p>&nbsp;</p>
+                <clr-alert [clrAlertClosable]="false" clrAlertType="success">
+                    <clr-alert-item>
+                        <span class="alert-text">User {{nameControl.value}} created successfully</span>
+                    </clr-alert-item>
+                </clr-alert>
+                <p>&nbsp;</p><p>&nbsp;</p><!-- Quick and dirty space -->
+                <button class="btn btn-outline" (click)="status=reset(status,newUserWizard,userForm)">Create another user</button>
+            </ng-template>
+
+            <ng-template ngSwitchDefault>This should never happen - an error?</ng-template>
+        </ng-container>
+    </clr-wizard-page>
+
+</clr-wizard>

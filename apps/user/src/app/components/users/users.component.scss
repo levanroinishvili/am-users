@@ -1,0 +1,30 @@
+@import 'all';
+
+.overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba($color: #000000, $alpha: .5);
+    padding-top: $header-height; // Account for the header
+    display: flex; // or grid
+    // align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+.on-top-of-others {
+    position: fixed;
+    top: $alert-top;
+    left: 0;
+    right: 0;
+}
+
+.user-container {
+    margin-top: $margin-top;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 32px 16px;
+}
+

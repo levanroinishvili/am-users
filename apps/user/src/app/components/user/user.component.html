@@ -1,0 +1,16 @@
+<div class="card" tabindex="0">
+    <div class="card-header">{{userAndKey.doc?.name ?? '&lt;Unknown&gt;'}}</div>
+    <div class="card-block">
+        <div class="card-media-block">
+            <img src="/assets/user-icon.png" width="64" class="card-media-image" />
+            <div class="card-media-description">
+                <span class="card-media-title">{{ userAndKey.doc?.role ?? '&lt;Unknown&gt;' }}</span>
+                <span class="card-media-text" *ngIf="userAndKey.doc.timestamp">Member Since {{ userAndKey.doc.timestamp | date }} </span>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <button class="btn btn-outline">Edit</button>
+        <button class="btn btn-danger-outline">Remove</button>
+    </div>
+</div>

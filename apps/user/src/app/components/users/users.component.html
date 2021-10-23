@@ -1,0 +1,35 @@
+<ng-container *ngIf="status$ | async as status">
+    <ng-container [ngSwitch]="status">
+        <!-- Loading Spinner -->
+        <ng-template ngSwitchCase="loading">
+            <div class="overlay">
+                <progress style="width:90%"></progress>
+            </div>
+        </ng-template>
+        <!-- Error Loading -->
+        <ng-template ngSwitchCase="error">
+            <clr-alert clrAlertType="danger" [clrAlertAppLevel]="true" class="on-top-of-others">
+                <clr-alert-item>
+                    <span class="alert-text">
+                        Error loading list of users.
+                        <button class="btn btn-primary" (click)="pageRequestRepeater.next()" style="float:right">Retry</button>
+                    </span>
+                </clr-alert-item>
+            </clr-alert>
+        </ng-template>
+    </ng-container>
+</ng-container>
+
+
+
+<ng-container *ngIf="page$ | async as page">
+
+    <am-user-paginator [page]="page" [disabled]="disableNavigation" (pageRequest)="pageRequest.next($event)"></am-user-paginator>
+
+    <div class="user-container" [@flyInOut]="pageNo">
+        <am-user-user *ngFor="let user of page.allDocs; trackBy: userTracker" [user]="user" (removed)="userRemoved(user.id)"></am-user-user>
+    </div>
+
+    <am-user-paginator [page]="page" [disabled]="disableNavigation" (pageRequest)="pageRequest.next($event)"></am-user-paginator>
+
+</ng-container>
