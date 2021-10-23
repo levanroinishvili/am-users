@@ -1,5 +1,8 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { registerLocaleData } from '@angular/common';
+import localeEnGB from '@angular/common/locales/en-GB';
+
 
 import { AngularFireModule } from '@angular/fire/compat';
 import { FirestoreModule } from '@angular/fire/firestore';
@@ -13,6 +16,8 @@ import { ClarityModule } from '@clr/angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UserComponent } from './components/user/user.component';
 import { PaginatorComponent } from './components/paginator/paginator.component';
+
+registerLocaleData(localeEnGB);
 
 @NgModule({
   declarations: [
@@ -30,7 +35,9 @@ import { PaginatorComponent } from './components/paginator/paginator.component';
     FirestoreModule,
     ClarityModule,
   ],
-  providers: [],
+  providers: [
+    {provide: LOCALE_ID, useValue: 'en-GB'}
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

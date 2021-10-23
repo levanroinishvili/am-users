@@ -1,6 +1,19 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DocumentReference } from '@angular/fire/compat/firestore'
-import { UserWithFirestamp, UserWithKey } from '../../models/users.model';
+import { FormControl, FormGroup } from '@angular/forms';
+import { map } from 'rxjs/operators';
+import { UserWithFirestamp, UserWithKey, UserWithTimestamp } from '../../models/users.model';
+import { DbService } from '../../services/db.service';
+import { Validators } from '../../validators';
+import { clrDateValidator, formatDate, unformatDate } from '../../utils/clarity.utils';
+
+type Status = 'idle' | 'waiting' | 'error' | 'success';
+
+interface UserEdited {
+  name: string;
+  role: string;
+  timestamp: string;
+}
 
 @Component({
   selector: 'am-user-user',
@@ -9,13 +22,49 @@ import { UserWithFirestamp, UserWithKey } from '../../models/users.model';
 })
 export class UserComponent {
 
-  // eslint-disable-next-line @angular-eslint/no-input-rename
-  @Input('user') userAndKey!: UserWithKey;
   @Output() removed = new EventEmitter<string>();
+  @Output() updated = new EventEmitter<string>();
+
+  // eslint-disable-next-line @angular-eslint/no-input-rename
+  @Input('user')
+  get userAndKey() { return this._userAndKey; };
+  set userAndKey(userAndKey: UserWithKey) {
+    this._userAndKey = userAndKey;
+    this.resetForm(userAndKey);
+  }
+  _userAndKey!: UserWithKey;
+
+  constructor(private db: DbService) {}
+
+  status: Status = 'idle';
+
+  roles$ = this.db.roles$.pipe(map(roles => roles.map(r => r.name)));
+
+  roleControl = new FormControl('', Validators.required);
+
+  nameControl = new FormControl('', {
+    updateOn: 'change', // 'blur'
+    validators: [Validators.nonEmpty, Validators.minLength(3), Validators.maxLength(50), Validators.titleCase],
+  });
+
+  timestampControl = new FormControl('', [Validators.nonEmpty, clrDateValidator]);
+
+  userForm = new FormGroup({
+    name: this.nameControl,
+    role: this.roleControl,
+    timestamp: this.timestampControl,
+  });
 
   showRemoveDialog = false;
   showErrorMessage = false;
   showSuccessMessage = false;
+
+  resetForm(user: UserWithKey) {
+    this.userForm.reset({
+      ...user.data,
+      timestamp: formatDate(user.data.timestamp)
+    });
+  }
 
   remove(ref: DocumentReference<UserWithFirestamp>) {
     ref.delete()
@@ -30,6 +79,19 @@ export class UserComponent {
           this.showErrorMessage = true;
         }
       )
+  }
+
+  update(lastPage: boolean, userRaw: UserEdited) {
+    console.log(userRaw)
+    const user: UserWithTimestamp = {...userRaw, timestamp: unformatDate(userRaw.timestamp)};
+    console.log(user);
+    if ( lastPage ) {
+      this.status = 'waiting';
+      this.userAndKey.ref.update(user).then(
+        () => this.status = 'success',
+        () => this.status = 'error'
+      );
+    }
   }
 
 }

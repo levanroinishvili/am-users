@@ -73,11 +73,7 @@ export class UsersComponent {
   );
 
   userTracker(index: number, user: UserWithKey) {
-    return user.id;
-  }
-
-  userRemoved(userId: string) {
-    console.log()
+    return index + '\n' + user.id + '\n' + user.data.name + '\n' + user.data.role;
   }
 
 }

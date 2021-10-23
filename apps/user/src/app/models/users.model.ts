@@ -4,7 +4,7 @@ export type UserRole = Record<string, never>; // Currently UserRole does not hav
 
 export interface UserCore {
     name: string;
-    role: number;
+    role: string;
 }
 
 export interface Firestamp {

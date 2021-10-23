@@ -10,7 +10,7 @@
         </div>
     </div>
     <div class="card-footer">
-        <button class="btn btn-outline">Edit</button>
+        <button class="btn btn-outline" (click)="editUserWizard.open()">Edit</button>
         <button class="btn btn-danger-outline" (click)="showRemoveDialog=true">Remove</button>
     </div>
 </div>
@@ -54,3 +54,87 @@
         <button type="button" class="btn btn-outline" (click)="showSuccessMessage=false">Ok</button>
     </div>
 </clr-modal>
+
+
+
+<clr-wizard
+    clrWizardSize="md"
+    (clrWizardOnNext)="update(editUserWizard.isLast, userForm.value)"
+    (clrWizardOnFinish)="updated.next(userAndKey.id)"
+    [clrWizardDisableStepnav]="status==='waiting'" [clrWizardPreventNavigation]="status==='waiting'"
+    #editUserWizard
+>
+    <clr-wizard-title>Edit User</clr-wizard-title>
+
+    <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
+    <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
+    <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
+    <clr-wizard-button [type]="'finish'">Finish</clr-wizard-button>
+
+    <clr-wizard-page>
+        <ng-template clrPageTitle>Introduction</ng-template>
+        <p>Here we can edit user information</p>
+        <p>Here we do not enforce the requirement that user name is unique.</p>
+    </clr-wizard-page>
+
+    <clr-wizard-page [clrWizardPageNextDisabled]="userForm.invalid">
+        <ng-template clrPageTitle>Edit User</ng-template>
+        <form clrForm clrLayout="vertical" [formGroup]="userForm">
+            <clr-input-container>
+                <label>User's Name</label>
+                <input clrInput formControlName="name" /><span c>Loading!</span>
+                <clr-control-helper>Enter unique name for the new user</clr-control-helper>
+                <clr-control-success>Nice name!</clr-control-success>
+                <clr-control-error *clrIfError="'nonempty'">Name should not be empty</clr-control-error>
+                <clr-control-error *clrIfError="'minlength'">Name should be at least
+                    {{ nameControl.errors!.minlength.requiredLength }} characters
+                    long</clr-control-error>
+                <clr-control-error *clrIfError="'maxlength'">Name should be at most
+                    {{ nameControl.errors!.maxlength.requiredLength }} characters
+                    long</clr-control-error>
+                <clr-control-error *clrIfError="'titlecase'">Name should be in title case</clr-control-error>
+                <clr-control-error *clrIfError="'uniquename'">Name "{{ nameControl.errors!.uniquename.name }}" already
+                    exists</clr-control-error>
+            </clr-input-container>
+
+            <clr-select-container>
+                <label>Specify Role</label>
+                <clr-control-helper>Select the role of the user</clr-control-helper>
+                <clr-control-success>Great role!</clr-control-success>
+                <select clrSelect formControlName="role">
+                    <option *ngFor="let role of roles$ | async" [value]="role">
+                        {{ role }}
+                    </option>
+                </select>
+            </clr-select-container>
+
+            <clr-date-container>
+                <label>Memer Since</label>
+                <input type="date" clrDate formControlName="timestamp">
+                <clr-control-error *clrIfError="'nonempty'">Date should not be empty</clr-control-error>
+                <clr-control-error *clrIfError="'clrDateValidator'">Invalid date.<br>Expected format {{timestampControl.errors!.clrDateValidator.format}}</clr-control-error>
+            </clr-date-container>
+
+        </form>
+    </clr-wizard-page>
+
+    <clr-wizard-page [clrWizardPageNextDisabled]="status!=='success'">
+        <ng-template clrPageTitle>Finish</ng-template>
+        <ng-container [ngSwitch]="status">
+            <clr-alert *ngSwitchCase="'success'" clrAlertType="info" [clrAlertClosable]="false">
+                <clr-alert-item>
+                    Successfully updated. Close the wizard to refresh the view
+                </clr-alert-item>
+            </clr-alert>
+            <ng-template ngSwitchCase="error">
+                <clr-alert clrAlertType="danger" [clrAlertClosable]="false">
+                    <clr-alert-item>
+                        Error occured while attempting to update user.
+                    </clr-alert-item>
+                </clr-alert>
+                <button class="btn btn-outline" style="float:right" (click)="update(editUserWizard.isLast, userForm.value)">Retry</button>
+            </ng-template>
+            <progress *ngSwitchCase="'waiting'" style="width:100%;margin-top:32px;"></progress>
+        </ng-container>
+    </clr-wizard-page>
+</clr-wizard>
