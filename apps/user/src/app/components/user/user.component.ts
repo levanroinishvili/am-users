@@ -88,9 +88,7 @@ export class UserComponent implements OnDestroy {
   }
 
   update(lastPage: boolean, userRaw: UserEdited) {
-    console.log(userRaw)
     const user: UserWithTimestamp = {...userRaw, timestamp: unformatDate(userRaw.timestamp)};
-    console.log(user);
     if ( lastPage ) {
       this.status = 'waiting';
       this.userAndKey.ref.update(user).then(
