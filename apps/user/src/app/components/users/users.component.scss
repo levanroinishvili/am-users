@@ -3,6 +3,11 @@
 :host {
     display: block;
     overflow: hidden; // To avoid scrollbar during animation
+    // The following makes sure the shadows are not truncated
+    margin-left: -$column-gap;
+    margin-right: -$column-gap;
+    padding-left: $column-gap;
+    padding-right: $column-gap;
 }
 
 .overlay {
