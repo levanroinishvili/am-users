@@ -1,7 +1,5 @@
 <header class="header-6">
-    <div class="branding">
-        <span class="title">Users App</span>
-    </div>
+    <button class="btn btn-primary config-button" (click)="configModal.open()">Config</button>
     <label for="search_input">
         <input id="search_input" type="text" placeholder="Find user" [formControl]="searchControl" />
     </label>
@@ -13,3 +11,32 @@
     <am-user-users [refresher]="refreshForNewUser" [search]="search$"></am-user-users>
 
 </div>
+
+<clr-modal #configModal clrModalSize="xl">
+    <h3 class="modal-title">Configure Demo Mode</h3>
+    <div class="modal-body" [formGroup]="configForm" clrLayout="horizontal" style="overflow:hidden">
+        <p>For demonstration purposes, we can simulate various network conditions to see how the application handles
+            potential problems. The application will simulate random network delays and failures.</p>
+        <p>These can be configured below.</p>
+        <div class="form-controls">
+            <div>
+                <clr-range-container>
+                    <label>Probability for Errors</label>
+                    <input type="range" clrRange min="0" max="1" step=".1" formControlName="errorProbability">
+                </clr-range-container>
+                <div class="value-display">Set to <span>{{configForm.get('errorProbability')?.value}}</span></div>
+            </div>
+            <div>
+                <clr-range-container>
+                    <label>Maximum Delay</label>
+                    <input type="range" clrRange min="0" [max]="maxMaxDelay" step="100" formControlName="maxDelay">
+                </clr-range-container>
+                <div class="value-display">Set to seconds <span style="display:inline-block;min-width:35px;">{{configForm.get('maxDelay')?.value/1000}}</span></div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="configModal.close()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="configModal.close()">Ok</button>
+    </div>
+</clr-modal>

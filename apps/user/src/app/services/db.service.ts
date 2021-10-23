@@ -15,6 +15,8 @@ export class DbService {
   private rolesCollection = this.firestore.collection<UserRole>(environment.firebaseRolesCollection);
   private usersCollection = this.firestore.collection<UserWithFirestamp>(environment.firebaseUsersCollection);
 
+  config = CONFIG.demo.default;
+
   roles$ = this.rolesCollection.valueChanges({idField: 'name'}).pipe(take(1));
 
   constructor(
@@ -55,7 +57,7 @@ export class DbService {
       if ( typeof limit === 'number' ) query = query.limit(limit);
     }
 
-    return Math.random() < CONFIG.demo.errorProbability
+    return Math.random() < this.config.errorProbability
       ? Promise.reject().catch(this.delayError) as Promise<PaginatedUsers> // Simulate fake error for demonstration
       : query.get().then(response => ({ // Occasionally attempt to return an actual response from server
       isFirstPage: ! startAfter && (! endBefore || response.size < (limit ?? Infinity)),
@@ -72,7 +74,7 @@ export class DbService {
   }
 
   addUser(user: UserCore) {
-    return Math.random() < CONFIG.demo.errorProbability // Return error with some probability - for demonstration
+    return Math.random() < this.config.errorProbability // Return error with some probability - for demonstration
       // Return a rejected promise with some randome delay for demo purposes
       ? Promise.reject(new Error('404 ;)')).catch(this.delayError)
       // Occasionally we still have to actually add the user ;)
@@ -85,13 +87,13 @@ export class DbService {
   }
 
   removeUser(ref: DocumentReference<UserWithFirestamp>) {
-    return Math.random() < CONFIG.demo.errorProbability
+    return Math.random() < this.config.errorProbability
       ? Promise.reject(new Error('Fake Error ;)')).catch(this.delayError)
       : ref.delete().then(this.delayValue, this.delayError);
   }
 
   updateUser(ref: DocumentReference<UserWithFirestamp>, user: UserWithTimestamp) {
-    return Math.random() < CONFIG.demo.errorProbability
+    return Math.random() < this.config.errorProbability
       ? Promise.reject(new Error('Fake Error ;)')).catch(this.delayError)
       : ref.update(user).then(this.delayValue, this.delayError);
   }
@@ -122,7 +124,7 @@ export class DbService {
 
   /** Delay certain processes for demo, to show how the app will behave over slow networks */
   private delayForDemo() {
-    return Math.ceil(CONFIG.demo.maxDelay * Math.random());
+    return Math.ceil(this.config.maxDelay * Math.random());
   }
 
   private delayValue = <T = unknown>(value: T): Promise<T> =>

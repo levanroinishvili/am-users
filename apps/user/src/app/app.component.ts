@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { combineLatest, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operators';
 import { UserSearchSpec } from './models/users.model';
 import { DbService } from './services/db.service';
+import { CONFIG } from './app.config';
 
 @Component({
   selector: 'am-user-root',
@@ -28,6 +29,16 @@ export class AppComponent {
     map(([search, roles]) => this.parseSearchTerm(search, roles)),
     distinctUntilChanged(this.searchAreSame)
   );
+
+  maxMaxDelay = CONFIG.demo.liveConfig.maxMaxDelay;
+
+  configForm = new FormGroup({
+    errorProbability: new FormControl(CONFIG.demo.default.errorProbability),
+    maxDelay: new FormControl(CONFIG.demo.default.maxDelay),
+  });
+
+  // Will not worry about memory leaks since this will never unsubscribe during the app lifetime
+  liveConfigSubscription = this.configForm.valueChanges.subscribe(config => this.db.config = config);
 
   parseSearchTerm(search: string, roles: string[]): UserSearchSpec {
     const words = search.split(/\s+/).filter(word => word);
