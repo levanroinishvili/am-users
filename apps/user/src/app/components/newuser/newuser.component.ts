@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ClrWizard } from '@clr/angular';
 import { map } from 'rxjs/operators';
@@ -20,6 +20,8 @@ export class NewuserComponent implements OnDestroy {
     private uniqueNameValidator: UniqueNameValidator,
     private db: DbService,
   ) { }
+
+  @Output() created = new EventEmitter<void>();
 
   showWizard = false;
   status: Status = 'idle';
@@ -53,8 +55,8 @@ export class NewuserComponent implements OnDestroy {
 
       this.db.addUser(user)
         .then(() => this.status = 'success')
+        .then(() => this.created.next())
         .catch(() => this.status = 'error')
-
     }
   }
 

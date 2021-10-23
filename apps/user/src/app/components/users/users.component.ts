@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
-import { combineLatest, EMPTY, of, Subject } from 'rxjs';
+import { Component, Input } from '@angular/core';
+import { combineLatest, EMPTY, Observable, of, ReplaySubject, Subject } from 'rxjs';
 import { UserPageRequest, UserWithKey } from '../../models/users.model';
 import { DbService } from '../../services/db.service';
 
 import { CONFIG } from '../../app.config';
-import { delay, map, startWith, switchMap, tap } from 'rxjs/operators';
+import { delay, map, startWith, switchAll, switchMap, tap } from 'rxjs/operators';
 import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
 
 type Status = 'idle' | 'loading' | 'error';
@@ -38,6 +38,16 @@ export class UsersComponent {
 
   constructor( private db: DbService, ) { }
 
+  @Input()
+  get refresher() {
+    return this._refresher$;
+  }
+  set refresher(r: Observable<any>) { // eslint-disable-line @typescript-eslint/no-explicit-any
+    this._refresherTrigger$.next(r);
+  }
+  _refresherTrigger$ = new ReplaySubject<Observable<any>>(1); // eslint-disable-line @typescript-eslint/no-explicit-any
+  _refresher$ = this._refresherTrigger$.pipe(switchAll());
+
   statusTrigger = new Subject<Status>(); // Put in status here
   status$ = this.statusTrigger.pipe( // Take out status from here
     switchMap(status =>
@@ -58,7 +68,8 @@ export class UsersComponent {
   // Will contain information about current page & pagination
   page$ = combineLatest([
     this.pageRequest.pipe(startWith<UserPageRequest>({})), // Limit will be added later
-    this.pageRequestRepeater.pipe(startWith(undefined))
+    this.pageRequestRepeater.pipe(startWith(undefined)), // Internal refresh - e.g. user deleted or updated
+    this.refresher.pipe(startWith(null)) // External refresh - e.g. new user created
   ]).pipe(
     map(([pageRequest, ]) => pageRequest),
     map(pageRequest => ({...pageRequest ?? {}, limit: CONFIG.pagesize})), // Always add limit

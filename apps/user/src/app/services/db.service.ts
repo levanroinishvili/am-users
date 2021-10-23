@@ -19,9 +19,7 @@ export class DbService {
 
   constructor(
     private firestore: AngularFirestore,
-  ) {
-    console.log(this)
-  }
+  ) { }
 
   nameExists(name: string) {
     return defer(() => { // Promise is eager. Avoid the Observable also being eager - in case we decide to keep it as an Observable

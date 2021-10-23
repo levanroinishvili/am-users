@@ -11,7 +11,7 @@
 
 <div class="content-container">
 
-    <am-user-newuser></am-user-newuser>
-    <am-user-users></am-user-users>
+    <am-user-newuser (created)="newUserCreated.next()"></am-user-newuser>
+    <am-user-users [refresher]="refreshForNewUser"></am-user-users>
 
 </div>
