@@ -73,14 +73,17 @@ export class UserComponent implements OnDestroy {
   }
 
   remove(ref: DocumentReference<UserWithFirestamp>) {
-    ref.delete()
+    this.status = 'waiting';
+    this.db.removeUser(ref)
       .then(
         () => {
           this.showRemoveDialog = false;
+          this.status = 'success';
           this.removed.next(this.userAndKey.id);
           this.showSuccessMessage = true;
         },
         () => {
+          this.status = 'error';
           this.showRemoveDialog = false;
           this.showErrorMessage = true;
         }
@@ -91,7 +94,7 @@ export class UserComponent implements OnDestroy {
     const user: UserWithTimestamp = {...userRaw, timestamp: unformatDate(userRaw.timestamp)};
     if ( lastPage ) {
       this.status = 'waiting';
-      this.userAndKey.ref.update(user).then(
+      this.db.updateUser(this.userAndKey.ref, user).then(
         () => this.status = 'success',
         () => this.status = 'error'
       );

@@ -20,6 +20,9 @@
     <div class="modal-body">
         <p>Remove this user?</p>
         <p>If you proceed, this operation cannot be un-done.</p>
+        <div style="height:24px;">
+            <progress style="width:100%" *ngIf="status==='waiting'"></progress>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-outline" (click)="showRemoveDialog=false">Cancel</button>

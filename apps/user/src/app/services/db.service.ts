@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFirestore, DocumentReference } from '@angular/fire/compat/firestore';
 import { environment } from '../../environments/environment';
 import { Firestamp, PaginatedUsers, UserCore, UserPageRequest, UserRole, UserWithFirestamp, UserWithTimestamp } from '../models/users.model';
 import { take, } from 'rxjs/operators';
@@ -73,6 +73,18 @@ export class DbService {
       timestamp: new Date() as unknown as Firestamp
     })
     .then(this.delayValue, this.delayError) // Delay promise for demonstration purposes
+  }
+
+  removeUser(ref: DocumentReference<UserWithFirestamp>) {
+    return Math.random() < CONFIG.demo.errorProbability
+      ? Promise.reject(new Error('Fake Error ;)')).catch(this.delayError)
+      : ref.delete().then(this.delayValue, this.delayError);
+  }
+
+  updateUser(ref: DocumentReference<UserWithFirestamp>, user: UserWithTimestamp) {
+    return Math.random() < CONFIG.demo.errorProbability
+      ? Promise.reject(new Error('Fake Error ;)')).catch(this.delayError)
+      : ref.update(user).then(this.delayValue, this.delayError);
   }
 
   private normalizeUser(user: UserWithFirestamp): UserWithTimestamp {
