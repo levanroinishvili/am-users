@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DocumentReference } from '@angular/fire/compat/firestore'
-import { UserWithKey, UserWithTimestamp } from '../../models/users.model';
+import { UserWithFirestamp, UserWithKey } from '../../models/users.model';
 
 @Component({
   selector: 'am-user-user',
@@ -16,7 +16,7 @@ export class UserComponent {
   showRemoveDialog = false;
   showErrorMessage = false;
 
-  remove(ref: DocumentReference<UserWithTimestamp>) {
+  remove(ref: DocumentReference<UserWithFirestamp>) {
     ref.delete()
       .then(
         () => {

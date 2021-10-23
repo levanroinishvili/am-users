@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { environment } from '../../environments/environment';
-import { PaginatedUsers, UserCore, UserPageRequest, UserRole, UserWithFirestamp, UserWithTimestamp } from '../models/users.model';
+import { Firestamp, PaginatedUsers, UserCore, UserPageRequest, UserRole, UserWithFirestamp, UserWithTimestamp } from '../models/users.model';
 import { take, } from 'rxjs/operators';
 import { defer, from } from 'rxjs';
 
@@ -13,7 +13,7 @@ import { CONFIG } from '../app.config';
 export class DbService {
 
   private rolesCollection = this.firestore.collection<UserRole>(environment.firebaseRolesCollection);
-  private usersCollection = this.firestore.collection<UserWithTimestamp>(environment.firebaseUsersCollection);
+  private usersCollection = this.firestore.collection<UserWithFirestamp>(environment.firebaseUsersCollection);
 
   roles$ = this.rolesCollection.valueChanges({idField: 'name'}).pipe(take(1));
 
@@ -58,9 +58,9 @@ export class DbService {
       allDocs: response.docs.map(doc => ({
         id: doc.id,
         ref: doc.ref,
-        data: this.normalizeUser(doc.data() as unknown as UserWithFirestamp)
+        data: this.normalizeUser(doc.data())
       }))
-    } as unknown as PaginatedUsers))
+    }))
     .then(this.delayValue, this.delayError);
   }
 
@@ -72,7 +72,7 @@ export class DbService {
       : this.usersCollection.add({
       ...user,
       name: this.trim(user.name),
-      timestamp: new Date()
+      timestamp: new Date() as unknown as Firestamp
     })
     .then(this.delayValue, this.delayError) // Delay promise for demonstration purposes
   }

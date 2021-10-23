@@ -7,11 +7,13 @@ export interface UserCore {
     role: number;
 }
 
+export interface Firestamp {
+    nanoseconds: number;
+    seconds: number;
+}
+
 export interface UserWithFirestamp extends UserCore {
-    timestamp: {
-        nanoseconds: number;
-        seconds: number;
-    }
+    timestamp: Firestamp;
 }
 
 export interface UserWithTimestamp extends UserCore {
@@ -20,7 +22,7 @@ export interface UserWithTimestamp extends UserCore {
 
 export interface UserWithKey {
     id: string;
-    ref: DocumentReference<UserWithTimestamp>;
+    ref: DocumentReference<UserWithFirestamp>;
     data: UserWithTimestamp;
 }
 
