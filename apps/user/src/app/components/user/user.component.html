@@ -5,7 +5,8 @@
             <img src="/assets/user-icon.png" width="64" class="card-media-image" />
             <div class="card-media-description">
                 <span class="card-media-title">{{ userAndKey.data?.role ?? '&lt;Unknown&gt;' }}</span>
-                <span class="card-media-text" *ngIf="userAndKey.data.timestamp">Member Since {{ userAndKey.data.timestamp | date:'short' }} </span>
+                <span class="card-media-text" *ngIf="userAndKey.data.timestamp">Member Since {{ userAndKey.data.timestamp | date:'mediumDate' }} </span>
+                <span class="card-media-text">{{userAndKey.data.disabled ? 'Disabled &#9940;' : 'Enabled' }}</span>
             </div>
         </div>
     </div>

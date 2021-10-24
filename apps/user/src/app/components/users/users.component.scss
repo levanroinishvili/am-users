@@ -35,6 +35,7 @@
     margin-top: $margin-top;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    align-items: end;
     gap: 32px 16px;
 }
 
