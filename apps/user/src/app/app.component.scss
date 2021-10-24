@@ -1,3 +1,5 @@
+@import 'all';
+
 .config-button {
     margin: 12px;
 }
@@ -49,7 +51,7 @@
         background-color:#02587e;
         color: white;
         border-radius: 4px;
-        width: calc(100vw - 300px)
+        width: calc(100vw - 210px)
     }
     input::placeholder {
         color: white;
@@ -63,6 +65,10 @@
         cursor: pointer;
         height: 30px;
         width: 30px;
+        @include mobile() {
+            height: 15px;
+            width: 15px;
+        }
     }
 }
 

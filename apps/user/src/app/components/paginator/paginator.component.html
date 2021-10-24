@@ -1,3 +1,5 @@
-<button class="btn btn-outline" [disabled]="disabled || page.isFirstPage" (click)="pageRequest.next({})">First Page</button>
-<button class="btn btn-outline" [disabled]="disabled || page.isFirstPage" (click)="pageRequest.next({endBefore: page.firstDoc})">Previous Page</button>
-<button class="btn btn-outline" [disabled]="disabled || page.isLastPage" (click)="pageRequest.next({startAfter: page.lastDoc})">Next Page</button>
+<ng-container *ngIf="small$ | async as small">
+    <button class="btn btn-outline" [class.btn-sm]="small===1" [disabled]="disabled || page.isFirstPage" (click)="pageRequest.next({})">First Page</button>
+    <button class="btn btn-outline" [class.btn-sm]="small===1" [disabled]="disabled || page.isFirstPage" (click)="pageRequest.next({endBefore: page.firstDoc})">Previous Page</button>
+    <button class="btn btn-outline" [class.btn-sm]="small===1" [disabled]="disabled || page.isLastPage" (click)="pageRequest.next({startAfter: page.lastDoc})">Next Page</button>
+</ng-container>

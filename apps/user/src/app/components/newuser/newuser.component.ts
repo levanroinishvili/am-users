@@ -4,6 +4,7 @@ import { ClrWizard } from '@clr/angular';
 import { map } from 'rxjs/operators';
 import { UserCore } from '../../models/users.model';
 import { DbService } from '../../services/db.service';
+import { ViewportService } from '../../services/viewport.service';
 
 import { Validators, UniqueNameValidator } from '../../validators';
 
@@ -19,9 +20,12 @@ export class NewuserComponent implements OnDestroy {
   constructor(
     private uniqueNameValidator: UniqueNameValidator,
     private db: DbService,
+    private viewport: ViewportService,
   ) { }
 
   @Output() created = new EventEmitter<void>();
+
+  wizardSize$ = this.viewport.mapViewport<string>('sm', 'md');
 
   showWizard = false;
   status: Status = 'idle';

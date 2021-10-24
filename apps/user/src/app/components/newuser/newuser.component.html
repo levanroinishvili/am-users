@@ -3,7 +3,8 @@
 </button>
 
 <clr-wizard
-    clrWizardSize="md" [(clrWizardOpen)]="showWizard" [clrWizardDisableStepnav]="status==='waiting'" [clrWizardPreventNavigation]="status==='waiting'"
+    clrLayout="vertical"
+    [clrWizardSize]="(wizardSize$ | async) ?? 'md'" [(clrWizardOpen)]="showWizard" [clrWizardDisableStepnav]="status==='waiting'" [clrWizardPreventNavigation]="status==='waiting'"
     clrForm clrLayout="vertical" [formGroup]="userForm"
     (ngSubmit)="submit(newUserWizard.isLast, userForm.value)"
     (clrWizardOnNext)="submit(newUserWizard.isLast, userForm.value)"
@@ -11,7 +12,7 @@
     (clrWizardOnFinish)="status=reset(status,newUserWizard,userForm)"
     #newUserWizard
 >
-    <clr-wizard-title>Create User</clr-wizard-title>
+    <clr-wizard-title>New User</clr-wizard-title>
 
     <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
     <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
@@ -19,7 +20,7 @@
     <clr-wizard-button [type]="'finish'">Finish</clr-wizard-button>
 
     <clr-wizard-page>
-        <ng-template clrPageTitle>Introduction</ng-template>
+        <ng-template clrPageTitle>Intro</ng-template>
         <p>Here you will be able to create a new user.</p>
         <p>To create a new user, we only require user's name and role</p>
         <p>
@@ -29,7 +30,7 @@
     </clr-wizard-page>
 
     <clr-wizard-page [clrWizardPageNextDisabled]="!nameControl.valid">
-        <ng-template clrPageTitle>Choose Name</ng-template>
+        <ng-template clrPageTitle>Name</ng-template>
         <p>Choose a <strong>unique</strong> name for the user. This will be validated against our database.</p>
         <clr-input-container>
             <label>User's Name</label>
@@ -58,7 +59,7 @@
     </clr-wizard-page>
 
     <clr-wizard-page [clrWizardPageNextDisabled]="roleControl.invalid">
-        <ng-template clrPageTitle>User Role</ng-template>
+        <ng-template clrPageTitle>Role</ng-template>
         <p>Select the role for the user.</p>
         <clr-select-container>
             <label>Specify Role</label>
@@ -73,7 +74,7 @@
     </clr-wizard-page>
 
     <clr-wizard-page>
-        <ng-template clrPageTitle>Account Activation</ng-template>
+        <ng-template clrPageTitle>Activate</ng-template>
         <p>Choose if the new account should be disabled</p>
         <clr-toggle-container>
             <label>Account Disabled</label>

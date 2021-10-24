@@ -7,6 +7,7 @@ import { DbService } from '../../services/db.service';
 import { fromList, Validators } from '../../validators';
 import { clrDateValidator, formatDate, unformatDate } from '../../utils/clarity.utils';
 import { Subject } from 'rxjs';
+import { ViewportService } from '../../services/viewport.service';
 
 type Status = 'idle' | 'waiting' | 'error' | 'success';
 
@@ -36,7 +37,12 @@ export class UserComponent implements OnDestroy {
   }
   _userAndKey!: UserWithKey;
 
-  constructor(private db: DbService) {}
+  constructor(
+    private db: DbService,
+    private viewport: ViewportService,
+  ) {}
+
+  wizardSize$ = this.viewport.mapViewport<string>('sm', 'md');
 
   status: Status = 'idle';
 

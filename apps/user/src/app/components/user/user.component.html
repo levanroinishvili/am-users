@@ -61,7 +61,7 @@
 
 
 <clr-wizard
-    clrWizardSize="md"
+    [clrWizardSize]="(wizardSize$ | async) ?? 'md'"
     (clrWizardOnNext)="update(editUserWizard.isLast, userForm.value)"
     (clrWizardOnFinish)="editUserWizard.reset();updated.next(userAndKey.id)"
     (clrWizardOnCancel)="editUserWizard.reset();"
@@ -76,13 +76,13 @@
     <clr-wizard-button [type]="'finish'">Finish</clr-wizard-button>
 
     <clr-wizard-page>
-        <ng-template clrPageTitle>Introduction</ng-template>
+        <ng-template clrPageTitle>Intro</ng-template>
         <p>Here we can edit user information</p>
         <p>Here we do not enforce the requirement that user name is unique.</p>
     </clr-wizard-page>
 
     <clr-wizard-page [clrWizardPageNextDisabled]="userForm.invalid">
-        <ng-template clrPageTitle>Edit User</ng-template>
+        <ng-template clrPageTitle>Edit</ng-template>
         <form clrForm clrLayout="vertical" [formGroup]="userForm">
             <clr-input-container>
                 <label>User's Name</label>
