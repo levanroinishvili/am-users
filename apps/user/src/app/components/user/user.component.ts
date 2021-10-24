@@ -14,6 +14,7 @@ interface UserEdited {
   name: string;
   role: string;
   timestamp: string;
+  disabled: boolean;
 }
 
 @Component({
@@ -54,11 +55,13 @@ export class UserComponent implements OnDestroy {
   });
 
   timestampControl = new FormControl('', [Validators.nonEmpty, clrDateValidator]);
+  accountDisabledControl = new FormControl(false);
 
   userForm = new FormGroup({
     name: this.nameControl,
     role: this.roleControl,
     timestamp: this.timestampControl,
+    disabled: this.accountDisabledControl,
   });
 
   showRemoveDialog = false;

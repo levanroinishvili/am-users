@@ -105,6 +105,7 @@ export class DbService {
     return {
       name: user.name ?? '&lt;Invalid&gt;',
       role: user.role ?? '&lt;Invalid&gt;',
+      disabled: typeof user.disabled === 'boolean' ? user.disabled : false,
       timestamp
     };
   }

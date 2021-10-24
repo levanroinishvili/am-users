@@ -36,10 +36,12 @@ export class NewuserComponent implements OnDestroy {
   });
 
   roleControl = new FormControl('', Validators.required);
+  accountDisabledControl = new FormControl(false);
 
   userForm = new FormGroup({
     name: this.nameControl,
-    role: this.roleControl
+    role: this.roleControl,
+    disabled: this.accountDisabledControl,
   });
 
   // Each time the form is updated, previous errors and submissions no longer matter - it's a new user

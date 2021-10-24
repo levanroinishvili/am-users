@@ -5,6 +5,7 @@ export type UserRole = Record<string, never>; // Currently UserRole does not hav
 export interface UserCore {
     name: string;
     role: string;
+    disabled: boolean;
 }
 
 export interface Firestamp {

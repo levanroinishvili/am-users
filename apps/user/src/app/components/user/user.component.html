@@ -1,4 +1,4 @@
-<div class="card" tabindex="0">
+<div class="card" tabindex="0" [class.disabled]="userAndKey.data?.disabled">
     <div class="card-header">{{userAndKey.data?.name ?? '&lt;Unknown&gt;'}}</div>
     <div class="card-block">
         <div class="card-media-block">
@@ -118,6 +118,12 @@
                 <clr-control-error *clrIfError="'clrDateValidator'">Invalid date.<br>Expected format {{timestampControl.errors!.clrDateValidator.format}}</clr-control-error>
             </clr-date-container>
 
+            <clr-toggle-container>
+                <label>Account Disabled</label>
+                <clr-toggle-wrapper>
+                    <input type="checkbox" clrToggle formControlName="disabled">
+                </clr-toggle-wrapper>
+            </clr-toggle-container>
         </form>
     </clr-wizard-page>
 

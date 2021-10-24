@@ -73,6 +73,17 @@
     </clr-wizard-page>
 
     <clr-wizard-page>
+        <ng-template clrPageTitle>Account Activation</ng-template>
+        <p>Choose if the new account should be disabled</p>
+        <clr-toggle-container>
+            <label>Account Disabled</label>
+            <clr-toggle-wrapper>
+                <input type="checkbox" clrToggle formControlName="disabled">
+            </clr-toggle-wrapper>
+        </clr-toggle-container>
+    </clr-wizard-page>
+
+    <clr-wizard-page>
         <ng-template clrPageTitle>Review</ng-template>
         <p>You have described this user:</p>
         <div class="card">
@@ -83,6 +94,7 @@
                     <div class="card-media-description">
                         <span class="card-media-title"><strong>{{nameControl.value}}</strong></span>
                         <span class="card-media-text">{{ roleControl.value }} </span>
+                        <span class="card-media-text">{{accountDisabledControl.value ? '&#9989; Account will activate' : '&#9940; Account Will be disabled'}}</span>
                     </div>
                 </div>
             </div>

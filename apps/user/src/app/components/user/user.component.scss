@@ -1,8 +1,13 @@
-.card {
+.card:not(.disabled) {
     transition: box-shadow 500ms, transform 500ms, background-color 1000ms;
+    box-shadow: 0 0 15px lightgrey;
 }
-.card:hover, .card:focus         {
-    box-shadow: 0 0 20px grey;
+.card:hover:not(.disabled), .card:focus:not(.disabled) {
+    box-shadow: 0 0 20px lightblue;
     transform: scale(1.05) translate3d(0, -10px, 0);
     background-color: rgb(211, 238, 247);
+}
+.card.disabled {
+    background-color: #eee;
+    color: #aaa;
 }
