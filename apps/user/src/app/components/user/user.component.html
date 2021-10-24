@@ -63,7 +63,8 @@
 <clr-wizard
     clrWizardSize="md"
     (clrWizardOnNext)="update(editUserWizard.isLast, userForm.value)"
-    (clrWizardOnFinish)="updated.next(userAndKey.id)"
+    (clrWizardOnFinish)="editUserWizard.reset();updated.next(userAndKey.id)"
+    (clrWizardOnCancel)="editUserWizard.reset();"
     [clrWizardDisableStepnav]="status==='waiting'" [clrWizardPreventNavigation]="status==='waiting'"
     #editUserWizard
 >
