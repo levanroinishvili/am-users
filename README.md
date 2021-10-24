@@ -2,66 +2,26 @@
 
 # AmUser
 
-This project was generated using [Nx](https://nx.dev).
+Here is the [deployed application](https://amusers-a8e3d.web.app/).
 
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
+1. Angular v12+ with Angular CLI (https://angular.io/guide/quickstart)
+1. Clarity v5+ (https://clarity.design/documentation/get-started)
+1. Google Firebase Hosting, Firestore & Functions (https://firebase.google.com)
+1. AngularFire v6+ (https://github.com/angular/angularfire)
+1. Nrwl (https://nrwl.io/)
 
-🔎 **Smart, Extensible Build Framework**
+<p style="text-align: center;display:grid;grid-auto-flow:column;align-items:center;justify-content:center;gap:32px;">
+  <img src="https://angular.io/assets/images/logos/angular/logo-nav@2x.png">
+  <img src="https://clarity.design/images/clarity-logo.svg">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Firebase_Logo.png/320px-Firebase_Logo.png">
+  <img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="100">
+</p>
 
 ## Quick Start & Documentation
-
-[Nx Documentation](https://nx.dev/angular)
-
-[10-minute video showing all Nx features](https://nx.dev/getting-started/intro)
-
-[Interactive Tutorial](https://nx.dev/tutorial/01-create-application)
-
-## Adding capabilities to your workspace
-
-Nx supports many plugins which add capabilities for developing different types of applications and different tools.
-
-These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects as well.
-
-Below are our core plugins:
-
-- [Angular](https://angular.io)
-  - `ng add @nrwl/angular`
-- [React](https://reactjs.org)
-  - `ng add @nrwl/react`
-- Web (no framework frontends)
-  - `ng add @nrwl/web`
-- [Nest](https://nestjs.com)
-  - `ng add @nrwl/nest`
-- [Express](https://expressjs.com)
-  - `ng add @nrwl/express`
-- [Node](https://nodejs.org)
-  - `ng add @nrwl/node`
-
-There are also many [community plugins](https://nx.dev/community) you could add.
-
-## Generate an application
-
-Run `ng g @nrwl/angular:app my-app` to generate an application.
-
-> You can use any of the plugins above to generate applications as well.
-
-When using Nx, you can create multiple applications and libraries in the same workspace.
-
-## Generate a library
-
-Run `ng g @nrwl/angular:lib my-lib` to generate a library.
-
-> You can also use any of the plugins above to generate libraries as well.
-
-Libraries are shareable across libraries and applications. They can be imported from `@am-user/mylib`.
 
 ## Development server
 
 Run `ng serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng g component my-component --project=my-app` to generate a new component.
 
 ## Build
 
@@ -82,15 +42,6 @@ Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
 ## Understand your workspace
 
 Run `nx dep-graph` to see a diagram of the dependencies of your projects.
-
-## Further help
-
-Visit the [Nx Documentation](https://nx.dev/angular) to learn more.
-
-
-
-
-
 
 ## ☁ Nx Cloud
 
