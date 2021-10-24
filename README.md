@@ -2,7 +2,10 @@
 
 # AmUser
 
+## Deployed Application
 Here is the [deployed application](https://amusers-a8e3d.web.app/).
+
+## Tools used
 
 1. Angular v12+ with Angular CLI (https://angular.io/guide/quickstart)
 1. Clarity v5+ (https://clarity.design/documentation/get-started)
@@ -10,9 +13,9 @@ Here is the [deployed application](https://amusers-a8e3d.web.app/).
 1. AngularFire v6+ (https://github.com/angular/angularfire)
 1. Nrwl (https://nrwl.io/)
 
-<p style="text-align: center;display:grid;grid-auto-flow:column;align-items:center;justify-content:center;gap:32px;">
-  <img src="https://angular.io/assets/images/logos/angular/logo-nav@2x.png">
-  <img src="https://clarity.design/images/clarity-logo.svg">
+<p style="text-align:center">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/c/cf/Angular_full_color_logo.svg" width="100">
+  <img src="https://clarity.design/images/clarity-logo.svg" width="80">
   <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Firebase_Logo.png/320px-Firebase_Logo.png">
   <img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="100">
 </p>
