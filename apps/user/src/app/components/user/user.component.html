@@ -88,7 +88,7 @@
             <clr-input-container>
                 <label>User's Name</label>
                 <input clrInput formControlName="name" /><span c>Loading!</span>
-                <clr-control-helper>Enter unique name for the new user</clr-control-helper>
+                <clr-control-helper>Enter name for the new user</clr-control-helper>
                 <clr-control-success>Nice name!</clr-control-success>
                 <clr-control-error *clrIfError="'nonempty'">Name should not be empty</clr-control-error>
                 <clr-control-error *clrIfError="'minlength'">Name should be at least
@@ -98,8 +98,6 @@
                     {{ nameControl.errors!.maxlength.requiredLength }} characters
                     long</clr-control-error>
                 <clr-control-error *clrIfError="'titlecase'">Name should be in title case</clr-control-error>
-                <clr-control-error *clrIfError="'uniquename'">Name "{{ nameControl.errors!.uniquename.name }}" already
-                    exists</clr-control-error>
             </clr-input-container>
 
             <clr-select-container>
