@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, DocumentReference } from '@angular/fire/compat/firestore';
 import { environment } from '../../environments/environment';
 import { Firestamp, PaginatedUsers, UserCore, UserPageRequest, UserRole, UserWithFirestamp, UserWithTimestamp } from '../models/users.model';
-import { take, } from 'rxjs/operators';
+import { map, take, } from 'rxjs/operators';
 import { defer, from } from 'rxjs';
 
 import { DemoConfigService } from './demo-config.service';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,7 @@ export class DbService {
   constructor(
     private configService: DemoConfigService,
     private firestore: AngularFirestore,
+    private httpClient: HttpClient,
   ) { }
 
   nameExists(name: string) {
@@ -85,11 +87,26 @@ export class DbService {
     .then(this.delayValue, this.delayError) // Delay promise for demonstration purposes
   }
 
-  removeUser(ref: DocumentReference<UserWithFirestamp>) {
-    return Math.random() < this.configService.config.errorProbability
-      ? Promise.reject(new Error('Fake Error ;)')).catch(this.delayError)
-      : ref.delete().then(this.delayValue, this.delayError);
+  removeUser(docId: string) {
+    return this.httpClient.get<{error?: string, result?: 'Ok'}>(
+      '/firebase/amusers-a8e3d/us-central1/deleteUser',
+      {
+        params: {docId}
+      }).pipe(
+        map((result) => {
+          console.log(result);
+          if ( 'error' in result ) throw new Error(result.error as string)
+          return result.result;
+        })
+      ).toPromise()
+      .then(console.log, console.warn);
   }
+
+  // removeUser(ref: DocumentReference<UserWithFirestamp>) {
+  //   return Math.random() < this.configService.config.errorProbability
+  //     ? Promise.reject(new Error('Fake Error ;)')).catch(this.delayError)
+  //     : ref.delete().then(this.delayValue, this.delayError);
+  // }
 
   updateUser(ref: DocumentReference<UserWithFirestamp>, user: UserWithTimestamp) {
     return Math.random() < this.configService.config.errorProbability

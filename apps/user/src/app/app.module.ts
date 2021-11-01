@@ -16,6 +16,7 @@ import { ClarityModule } from '@clr/angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UserComponent } from './components/user/user.component';
 import { PaginatorComponent } from './components/paginator/paginator.component';
+import { HttpClientModule } from '@angular/common/http';
 
 registerLocaleData(localeEnGB);
 
@@ -30,6 +31,7 @@ registerLocaleData(localeEnGB);
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     FirestoreModule,

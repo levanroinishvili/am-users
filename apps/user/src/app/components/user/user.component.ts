@@ -83,7 +83,7 @@ export class UserComponent implements OnDestroy {
 
   remove(ref: DocumentReference<UserWithFirestamp>) {
     this.status = 'waiting';
-    this.db.removeUser(ref)
+    this.db.removeUser(ref.id)
       .then(
         () => {
           this.showRemoveDialog = false;
